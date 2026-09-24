@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASTELENS | Records</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b1712;
+            color: #f1f8f4;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 230px;
+            height: 100vh;
+            background: #10251b;
+            padding: 30px 20px;
+            border-right: 1px solid #284936;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #b7f34a;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            display: block;
+            color: #91a89b;
+            font-size: 11px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #a9bdb1;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #b7f34a;
+            color: #0b1712;
+        }
+
+        .main {
+            margin-left: 230px;
+            padding: 40px;
+        }
+
+        .heading h1 {
+            font-size: 32px;
+        }
+
+        .heading p {
+            color: #91a89b;
+            margin-top: 8px;
+            margin-bottom: 30px;
+        }
+
+        .table-box {
+            background: #10251b;
+            border: 1px solid #284936;
+            border-radius: 18px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        .table-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .table-top h2 {
+            font-size: 20px;
+        }
+
+        .count {
+            background: #162d21;
+            color: #b7f34a;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            color: #91a89b;
+            font-size: 12px;
+            border-bottom: 1px solid #284936;
+        }
+
+        td {
+            padding: 17px 15px;
+            border-bottom: 1px solid #1d3828;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #162d21;
+        }
+
+        .food {
+            font-weight: bold;
+        }
+
+        .meal {
+            color: #91a89b;
+        }
+
+        .waste {
+            color: #ffcf4a;
+            font-weight: bold;
+        }
+
+        .loss {
+            color: #ff7b72;
+            font-weight: bold;
+        }
+
+        .percentage {
+            background: #243d2c;
+            color: #b7f34a;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🍃 WASTELENS
+            <span>FOOD WASTE ANALYTICS</span>
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">⌂ Home</a>
+
+            <a href="dashboard.html">◉ Dashboard</a>
+
+            <a href="add-waste.html">＋ Add Waste</a>
+
+            <a href="records.html" class="active">▣ Records</a>
+
+            <a href="#">◈ Analysis</a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="heading">
+
+            <h1>Waste Records</h1>
+
+            <p>
+                View and monitor all recorded food waste data.
+            </p>
+
+        </div>
+
+
+        <div class="table-box">
+
+            <div class="table-top">
+
+                <h2>Food Waste History</h2>
+
+                <div class="count">
+                    4 Records
+                </div>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>DATE</th>
+                        <th>FOOD</th>
+                        <th>MEAL</th>
+                        <th>PREPARED</th>
+                        <th>WASTED</th>
+                        <th>WASTE %</th>
+                        <th>LOSS</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>24 Sep 2026</td>
+
+                        <td class="food">🍚 Rice</td>
+
+                        <td class="meal">Lunch</td>
+
+                        <td>20 kg</td>
+
+                        <td class="waste">5 kg</td>
+
+                        <td>
+                            <span class="percentage">25%</span>
+                        </td>
+
+                        <td class="loss">₹250</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>23 Sep 2026</td>
+
+                        <td class="food">🥘 Sambar</td>
+
+                        <td class="meal">Lunch</td>
+
+                        <td>10 kg</td>
+
+                        <td class="waste">2 kg</td>
+
+                        <td>
+                            <span class="percentage">20%</span>
+                        </td>
+
+                        <td class="loss">₹160</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>22 Sep 2026</td>
+
+                        <td class="food">🫓 Chapati</td>
+
+                        <td class="meal">Dinner</td>
+
+                        <td>8 kg</td>
+
+                        <td class="waste">1 kg</td>
+
+                        <td>
+                            <span class="percentage">12.5%</span>
+                        </td>
+
+                        <td class="loss">₹60</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>21 Sep 2026</td>
+
+                        <td class="food">🍚 Rice</td>
+
+                        <td class="meal">Lunch</td>
+
+                        <td>18 kg</td>
+
+                        <td class="waste">7 kg</td>
+
+                        <td>
+                            <span class="percentage">38.9%</span>
+                        </td>
+
+                        <td class="loss">₹350</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+<script>
+
+async function loadRecords() {
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/waste"
+        );
+
+        const records = await response.json();
+
+        const tableBody = document.querySelector("tbody");
+
+        tableBody.innerHTML = "";
+
+        records.forEach(record => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${record.date}</td>
+                <td>${record.food_name}</td>
+                <td>${record.meal}</td>
+                <td>${record.prepared_quantity} kg</td>
+                <td>${record.wasted_quantity} kg</td>
+                <td>${record.waste_percentage}%</td>
+                <td>₹${record.money_loss}</td>
+            `;
+
+            tableBody.appendChild(row);
+
+        });
+
+    } catch (error) {
+
+        console.error("Records loading failed:", error);
+
+    }
+
+}
+
+loadRecords();
+
+</script>
+</body>
+</html>

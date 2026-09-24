@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASTELENS | Add Waste</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b1712;
+            color: #f1f8f4;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 230px;
+            height: 100vh;
+            background: #10251b;
+            padding: 30px 20px;
+            border-right: 1px solid #284936;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #b7f34a;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            display: block;
+            color: #91a89b;
+            font-size: 11px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #a9bdb1;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #b7f34a;
+            color: #0b1712;
+        }
+
+        .main {
+            margin-left: 230px;
+            padding: 45px;
+            max-width: 1000px;
+        }
+
+        .heading h1 {
+            font-size: 32px;
+        }
+
+        .heading p {
+            color: #91a89b;
+            margin-top: 8px;
+            margin-bottom: 35px;
+        }
+
+        .form-box {
+            background: #10251b;
+            border: 1px solid #284936;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #a9bdb1;
+            font-size: 14px;
+            margin-bottom: 9px;
+        }
+
+        input,
+        select {
+            background: #162d21;
+            color: white;
+            border: 1px solid #355742;
+            padding: 14px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #b7f34a;
+        }
+
+        .full {
+            grid-column: 1 / 3;
+        }
+
+        .preview {
+            margin-top: 30px;
+            background: #162d21;
+            padding: 20px;
+            border-radius: 14px;
+            border-left: 4px solid #b7f34a;
+        }
+
+        .preview h3 {
+            color: #b7f34a;
+            margin-bottom: 10px;
+        }
+
+        .preview p {
+            color: #a9bdb1;
+        }
+
+        .btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #b7f34a;
+            color: #0b1712;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #d0ff70;
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🍃 WASTELENS
+            <span>FOOD WASTE ANALYTICS</span>
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">⌂ Home</a>
+
+            <a href="dashboard.html">◉ Dashboard</a>
+
+            <a href="add-waste.html" class="active">
+                ＋ Add Waste
+            </a>
+
+            <a href="#">▣ Records</a>
+
+            <a href="#">◈ Analysis</a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="heading">
+
+            <h1>Add Food Waste</h1>
+
+            <p>
+                Record today's food preparation and waste details.
+            </p>
+
+        </div>
+
+
+        <div class="form-box">
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>Food Name</label>
+
+                    <input
+                        type="text"
+                        id="foodName"
+                        placeholder="Example: Rice"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Meal</label>
+
+                    <select id="meal">
+
+                        <option value="">
+                            Select meal
+                        </option>
+
+                        <option>Breakfast</option>
+
+                        <option>Lunch</option>
+
+                        <option>Dinner</option>
+
+                        <option>Snacks</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Prepared Quantity (kg)</label>
+
+                    <input
+                        type="number"
+                        id="prepared"
+                        placeholder="Example: 20"
+                        oninput="calculateWaste()"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Wasted Quantity (kg)</label>
+
+                    <input
+                        type="number"
+                        id="wasted"
+                        placeholder="Example: 5"
+                        oninput="calculateWaste()"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Cost per kg (₹)</label>
+
+                    <input
+                        type="number"
+                        id="cost"
+                        placeholder="Example: 50"
+                        oninput="calculateWaste()"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Date</label>
+
+                    <input
+                        type="date"
+                        id="date"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="preview">
+
+                <h3>Live Calculation</h3>
+
+                <p id="result">
+                    Enter prepared and wasted quantities to see the analysis.
+                </p>
+
+            </div>
+
+
+            <button class="btn" onclick="addRecord()">
+                + ADD WASTE RECORD
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+function calculateWaste() {
+    const prepared = Number(document.getElementById("prepared").value);
+    const wasted = Number(document.getElementById("wasted").value);
+    const cost = Number(document.getElementById("cost").value);
+
+    const result = document.getElementById("result");
+
+    if (prepared > 0 && wasted >= 0) {
+        const percentage = (wasted / prepared) * 100;
+        const loss = wasted * cost;
+
+        result.innerHTML =
+            "Waste Percentage: " + percentage.toFixed(1) +
+            "% &nbsp; | &nbsp; Estimated Loss: ₹" + loss.toFixed(2);
+    }
+}
+
+
+async function addRecord() {
+
+    const foodName = document.getElementById("foodName").value;
+    const meal = document.getElementById("meal").value;
+    const prepared = document.getElementById("prepared").value;
+    const wasted = document.getElementById("wasted").value;
+    const cost = document.getElementById("cost").value;
+    const date = document.getElementById("date").value;
+
+    if (!foodName || !meal || !prepared || !wasted || !cost || !date) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (Number(wasted) > Number(prepared)) {
+        alert("Wasted quantity cannot be greater than prepared quantity.");
+        return;
+    }
+
+    const data = {
+        food_name: foodName,
+        meal: meal,
+        prepared_quantity: Number(prepared),
+        wasted_quantity: Number(wasted),
+        cost_per_kg: Number(cost),
+        date: date
+    };
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/waste",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+        );
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("Waste record added successfully!");
+        } else {
+            alert(result.error || "Something went wrong.");
+        }
+
+    } catch (error) {
+
+        alert("Backend connection failed. Make sure Flask is running.");
+        console.error(error);
+
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WASTELENS | Analysis</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b1712;
+            color: white;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 230px;
+            height: 100vh;
+            background: #10251b;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #b7f34a;
+            margin-bottom: 40px;
+        }
+
+        .nav a {
+            display: block;
+            color: #b7c5bd;
+            text-decoration: none;
+            padding: 14px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .nav a:hover,
+        .nav .active {
+            background: #1c3829;
+            color: #b7f34a;
+        }
+
+        .main {
+            margin-left: 230px;
+            padding: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #8fa197;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #10251b;
+            border: 1px solid #203d2d;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #8fa197;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #b7f34a;
+        }
+
+        .recommendation {
+            margin-top: 25px;
+            background: #162f21;
+            border-left: 4px solid #b7f34a;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .recommendation h2 {
+            color: #b7f34a;
+            margin-bottom: 12px;
+        }
+
+        .recommendation p {
+            color: #c5d1ca;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            WASTELENS
+        </div>
+
+        <nav class="nav">
+
+            <a href="index.html">⌂ Home</a>
+
+            <a href="dashboard.html">▣ Dashboard</a>
+
+            <a href="add-waste.html">＋ Add Waste</a>
+
+            <a href="records.html">▤ Records</a>
+
+            <a href="analysis.html" class="active">◈ Analysis</a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="header">
+
+            <h1>Waste Analysis</h1>
+
+            <p>
+                Understand food waste patterns and identify areas for improvement.
+            </p>
+
+        </div>
+
+
+        <section class="grid">
+
+            <div class="card">
+
+                <div class="card-title">
+                    MOST WASTED FOOD
+                </div>
+
+                <div class="card-value" id="mostFood">
+                    Analyzing...
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    HIGHEST WASTE MEAL
+                </div>
+
+                <div class="card-value" id="highestMeal">
+                    Analyzing...
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    TOTAL WASTE
+                </div>
+
+                <div class="card-value" id="totalWaste">
+                    0 kg
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-title">
+                    MONEY LOSS
+                </div>
+
+                <div class="card-value" id="totalLoss">
+                    ₹0
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="card" style="margin-top:25px;">
+
+    <div class="card-title">
+        WASTE PATTERN
+    </div>
+
+    <div id="patternChart" style="
+        display:flex;
+        align-items:flex-end;
+        gap:25px;
+        height:220px;
+        padding:20px 10px;
+        border-bottom:1px solid #294535;
+    ">
+
+    </div>
+
+</section>
+<section class="card" style="margin-top:25px;">
+
+    <div class="card-title">
+        PATTERN DETECTION
+    </div>
+
+    <div id="patternStatus"
+         style="
+            margin-top:15px;
+            font-size:22px;
+            font-weight:bold;
+         ">
+        Analyzing...
+    </div>
+
+    <p id="patternExplanation"
+       style="
+          margin-top:10px;
+          color:#9aa9a0;
+          line-height:1.6;
+       ">
+        Analyzing waste level...
+    </p>
+
+</section>
+        <section class="recommendation">
+
+            <h2>💡 Smart Recommendation</h2>
+
+            <p id="recommendationText">
+                Analyzing your waste records...
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        async function loadAnalysis() {
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:5000/api/waste"
+                );
+
+                const records = await response.json();
+
+
+                if (records.length === 0) {
+
+                    document.getElementById("mostFood").textContent =
+                        "No data";
+
+                    document.getElementById("highestMeal").textContent =
+                        "No data";
+
+                    document.getElementById("recommendationText").textContent =
+                        "Add some waste records to generate analysis.";
+
+                    return;
+                }
+
+
+                let totalWaste = 0;
+                let totalLoss = 0;
+
+                const foodWaste = {};
+                const mealWaste = {};
+
+
+                records.forEach(record => {
+
+                    totalWaste += Number(record.wasted_quantity);
+
+                    totalLoss += Number(record.money_loss);
+
+
+                    if (!foodWaste[record.food_name]) {
+                        foodWaste[record.food_name] = 0;
+                    }
+
+                    foodWaste[record.food_name] +=
+                        Number(record.wasted_quantity);
+
+
+                    if (!mealWaste[record.meal]) {
+                        mealWaste[record.meal] = 0;
+                    }
+
+                    mealWaste[record.meal] +=
+                        Number(record.wasted_quantity);
+
+                });
+
+                const chart = document.getElementById("patternChart");
+
+records.slice().reverse().forEach(record => {
+
+    const bar = document.createElement("div");
+
+    const height = Math.min(
+    Math.max(Number(record.wasted_quantity) * 12, 10),
+    140
+);
+    bar.style.height = height + "px";
+    bar.style.width = "45px";
+    bar.style.background = "#b7f34a";
+    bar.style.borderRadius = "8px 8px 0 0";
+    bar.style.position = "relative";
+
+    bar.title =
+        record.food_name +
+        " - " +
+        record.wasted_quantity +
+        " kg wasted";
+
+    chart.appendChild(bar);
+
+});
+                const mostFood = Object.keys(foodWaste).reduce(
+                    (a, b) =>
+                        foodWaste[a] > foodWaste[b] ? a : b
+                );
+
+
+                const highestMeal = Object.keys(mealWaste).reduce(
+                    (a, b) =>
+                        mealWaste[a] > mealWaste[b] ? a : b
+                );
+
+
+                document.getElementById("mostFood").textContent =
+                    mostFood;
+
+                document.getElementById("highestMeal").textContent =
+                    highestMeal;
+
+                document.getElementById("totalWaste").textContent =
+                    totalWaste.toFixed(2) + " kg";
+
+                document.getElementById("totalLoss").textContent =
+                    "₹" + totalLoss.toFixed(2);
+
+                let patternStatus = "";
+let patternExplanation = "";
+
+if (totalWaste >= 10) {
+
+    patternStatus = "HIGH WASTE ⚠️";
+
+    patternExplanation =
+        "Waste level is high. Consider reducing the prepared quantity and monitoring the most wasted food.";
+
+} else if (totalWaste >= 5) {
+
+    patternStatus = "MEDIUM WASTE ⚡";
+
+    patternExplanation =
+        "Waste level is moderate. Monitor food preparation and identify repeated waste patterns.";
+
+} else {
+
+    patternStatus = "LOW WASTE ✓";
+
+    patternExplanation =
+        "Waste level is currently low. Continue monitoring to maintain the trend.";
+
+}
+
+document.getElementById("patternStatus").textContent =
+    patternStatus;
+
+document.getElementById("patternExplanation").textContent =
+    patternExplanation;
+                document.getElementById("recommendationText").textContent =
+                    mostFood + " is currently the most wasted food, while " +
+                    highestMeal +
+                    " has the highest waste among meals. Consider reducing preparation quantity and monitoring this category.";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Analysis loading failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        loadAnalysis();
+
+    </script>
+
+</body>
+
+</html>
