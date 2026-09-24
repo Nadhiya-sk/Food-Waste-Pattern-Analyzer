@@ -1,133 +1,764 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Waste Pattern Analyzer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+<title>WASTELENS | Food Waste Analytics</title>
 
-        body {
-            background: #f5f7f6;
-            color: #1f2937;
-        }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
 
-        nav {
-            background: #1b4332;
-            padding: 20px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        nav h2 {
-            color: white;
-        }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #06110c;
+    color: #f4f7f3;
+    overflow-x: hidden;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 25px;
-        }
+:root {
+    --green: #06110c;
+    --card: #0b2117;
+    --lime: #b7f34a;
+    --light: #dfff9b;
+    --text: #f4f7f3;
+    --muted: #9eaaa3;
+}
 
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 50px 8%;
-        }
+/* NAVBAR */
 
-        .hero-text {
-            max-width: 550px;
-        }
+nav {
+    height: 78px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(183,243,74,.12);
+    background: rgba(4,15,10,.92);
+    position: relative;
+    z-index: 10;
+}
 
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #1b4332;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .hero p {
-            font-size: 18px;
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
+.logo-icon {
+    font-size: 32px;
+}
 
-        .btn {
-            display: inline-block;
-            padding: 14px 25px;
-            background: #2d6a4f;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-        }
+.logo h2 {
+    font-size: 23px;
+    letter-spacing: -1px;
+}
 
-        .hero-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
+.logo span {
+    color: var(--lime);
+}
 
-        .hero-card .emoji {
-            font-size: 100px;
-        }
+.logo small {
+    display: block;
+    color: #aeb9b2;
+    font-size: 9px;
+    letter-spacing: 3px;
+    margin-top: 2px;
+}
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #1b4332;
-            color: white;
-        }
-    </style>
+.nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #d8dedb;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--lime);
+}
+
+.add-btn {
+    background: var(--lime);
+    color: #09120c !important;
+    padding: 13px 21px;
+    border-radius: 30px;
+    font-weight: 700;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 570px;
+    padding: 75px 5%;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    background: rgba(70,170,30,.12);
+    filter: blur(100px);
+    right: -150px;
+    top: 20px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.tag {
+    color: var(--lime);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 6vw, 78px);
+    line-height: 1.02;
+    max-width: 700px;
+}
+
+.hero h1 span {
+    color: var(--lime);
+}
+
+.hero p {
+    max-width: 570px;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 25px 0 32px;
+}
+
+.buttons {
+    display: flex;
+    gap: 16px;
+}
+
+.primary,
+.secondary {
+    padding: 15px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.primary {
+    background: var(--lime);
+    color: #08110c;
+}
+
+.secondary {
+    border: 1px solid #34513e;
+    color: white;
+}
+
+.primary:hover,
+.secondary:hover {
+    transform: translateY(-3px);
+}
+
+/* HERO IMAGE */
+
+.hero-visual {
+    position: relative;
+    height: 440px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.food-image {
+    width: 390px;
+    height: 390px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(183,243,74,.5);
+    box-shadow:
+        0 0 0 20px rgba(183,243,74,.04),
+        0 0 80px rgba(117,220,50,.2);
+}
+
+.floating-card {
+    position: absolute;
+    background: rgba(8,30,20,.94);
+    border: 1px solid rgba(183,243,74,.35);
+    border-radius: 18px;
+    padding: 18px 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+.card-one {
+    top: 35px;
+    left: 10px;
+}
+
+.card-two {
+    right: 0;
+    bottom: 45px;
+}
+
+.floating-card small {
+    color: var(--muted);
+}
+
+.floating-card strong {
+    display: block;
+    color: var(--lime);
+    font-size: 25px;
+    margin-top: 5px;
+}
+
+/* FEATURES */
+
+.features {
+    padding: 70px 5%;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+}
+
+.feature {
+    background: linear-gradient(145deg,#0c291b,#081810);
+    border: 1px solid #183c28;
+    border-radius: 25px;
+    padding: 32px;
+    transition: .35s;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature:hover {
+    transform: translateY(-8px);
+    border-color: var(--lime);
+}
+
+.feature-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--lime);
+    color: #07110b;
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.feature h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.feature p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* PROCESS */
+
+.process {
+    padding: 80px 5%;
+    text-align: center;
+    background: #07150e;
+}
+
+.section-label {
+    color: var(--lime);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 12px;
+}
+
+.process h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 45px;
+    margin: 12px 0 45px;
+}
+
+.process h2 span {
+    color: var(--lime);
+}
+
+.steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.step {
+    width: 150px;
+}
+
+.step-circle {
+    width: 65px;
+    height: 65px;
+    margin: auto;
+    border: 1px solid var(--lime);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--lime);
+    font-size: 23px;
+}
+
+.step h4 {
+    margin-top: 14px;
+}
+
+.step p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.arrow {
+    color: var(--lime);
+    font-size: 25px;
+}
+
+/* IMPACT */
+
+.impact {
+    padding: 80px 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.impact h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    line-height: 1.15;
+}
+
+.impact h2 span {
+    color: var(--lime);
+}
+
+.impact p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 20px;
+    max-width: 550px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+}
+
+.stat {
+    padding: 25px 15px;
+    text-align: center;
+    background: var(--card);
+    border: 1px solid #183c28;
+    border-radius: 20px;
+}
+
+.stat b {
+    display: block;
+    font-size: 28px;
+    color: var(--lime);
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* CTA */
+
+.cta {
+    margin: 30px 5% 70px;
+    padding: 35px 45px;
+    border-radius: 25px;
+    background: linear-gradient(100deg,var(--lime),#8edb38);
+    color: #08110c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cta h2 {
+    font-size: 25px;
+}
+
+.cta p {
+    margin-top: 5px;
+}
+
+.cta a {
+    background: #07130d;
+    color: white;
+    padding: 14px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 35px 5%;
+    border-top: 1px solid #183023;
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .buttons {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        margin-top: 35px;
+    }
+
+    .food-image {
+        width: 300px;
+        height: 300px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .impact {
+        grid-template-columns: 1fr;
+    }
+
+    .cta {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <nav>
-        <h2>🍃 Food Waste Analyzer</h2>
+<!-- NAVBAR -->
+
+<nav>
+
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
 
         <div>
-            <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
+            <h2>WASTE<span>LENS</span></h2>
+            <small>FOOD WASTE ANALYTICS</small>
         </div>
-    </nav>
+    </div>
 
-    <section class="hero">
+    <div class="nav-links">
 
-        <div class="hero-text">
-            <h1>Understand Food Waste Patterns</h1>
+        <a href="index.html" class="active">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="add-waste.html">Add Waste</a>
+        <a href="records.html">Records</a>
+        <a href="analysis.html">Analysis</a>
 
-            <p>
-                Track food waste, analyze patterns, identify major sources
-                of waste and make better decisions to reduce unnecessary
-                food loss.
-            </p>
+        <a href="add-waste.html" class="add-btn">＋ Add Waste</a>
 
-            <a href="dashboard.html" class="btn">
-                View Dashboard
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            Smarter Tracking • Better Decisions • Less Waste
+        </div>
+
+        <h1>
+            Turn Food Waste Into
+            <span>Smart Decisions.</span>
+        </h1>
+
+        <p>
+            Track food waste, discover hidden patterns,
+            and understand where your money is being lost.
+        </p>
+
+        <div class="buttons">
+
+            <a href="dashboard.html" class="primary">
+                📊 Explore Dashboard →
             </a>
+
+            <a href="add-waste.html" class="secondary">
+                ＋ Add Waste
+            </a>
+
         </div>
 
-        <div class="hero-card">
-            <div class="emoji">🍚</div>
-            <h2>Reduce Waste</h2>
-            <p>Analyze • Understand • Improve</p>
+    </div>
+
+
+    <div class="hero-visual">
+
+        <img
+            src="c:\Users\yogan\Documents\WhatsApp Image .jpg"
+            class="food-image"
+            alt="Food waste analytics"
+        >
+
+        <div class="floating-card card-one">
+            <small>Waste Pattern</small>
+            <strong>↗ Analysis</strong>
         </div>
 
-    </section>
+        <div class="floating-card card-two">
+            <small>Less Waste</small>
+            <strong>More Value</strong>
+        </div>
 
-    <footer>
-        <p>Food Waste Pattern Analyzer © 2026</p>
-    </footer>
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features">
+
+    <div class="feature">
+
+        <div class="feature-icon">🍽️</div>
+
+        <h3>Track</h3>
+
+        <p>
+            Record daily food waste with simple
+            and structured information.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">📈</div>
+
+        <h3>Analyze</h3>
+
+        <p>
+            Find waste patterns, peak meals,
+            and frequently wasted food items.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">🌿</div>
+
+        <h3>Reduce</h3>
+
+        <p>
+            Use data-driven insights to reduce
+            food waste, cost and resources.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- PROCESS -->
+
+<section class="process">
+
+    <div class="section-label">
+        The WASTELENS Process
+    </div>
+
+    <h2>
+        Your Waste Has a <span>Pattern.</span>
+    </h2>
+
+    <div class="steps">
+
+        <div class="step">
+            <div class="step-circle">🍚</div>
+            <h4>Food</h4>
+            <p>What gets wasted?</p>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">
+            <div class="step-circle">🗃️</div>
+            <h4>Data</h4>
+            <p>We collect it</p>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">
+            <div class="step-circle">🔍</div>
+            <h4>Pattern</h4>
+            <p>We find trends</p>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">
+            <div class="step-circle">💡</div>
+            <h4>Insight</h4>
+            <p>You get answers</p>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">
+            <div class="step-circle">🌱</div>
+            <h4>Action</h4>
+            <p>Reduce the waste</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- IMPACT -->
+
+<section class="impact">
+
+    <div>
+
+        <div class="section-label">
+            Small Changes. Big Impact.
+        </div>
+
+        <h2>
+            Less Food Waste.
+            <br>
+            A <span>Smarter Tomorrow.</span>
+        </h2>
+
+        <p>
+            Every gram of food saved means less money lost,
+            better resource usage and a step towards a
+            more sustainable future.
+        </p>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+            <b>0+</b>
+            <span>Kg Waste Tracked</span>
+        </div>
+
+        <div class="stat">
+            <b>₹0+</b>
+            <span>Money Loss</span>
+        </div>
+
+        <div class="stat">
+            <b>0+</b>
+            <span>Records Analyzed</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta">
+
+    <div>
+        <h2>🌿 Let's make food count.</h2>
+        <p>Track. Analyze. Reduce.</p>
+    </div>
+
+    <a href="add-waste.html">
+        Get Started →
+    </a>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div>
+        © 2026 WASTELENS
+    </div>
+
+    <div>
+        FOOD WASTE ANALYTICS
+    </div>
+
+</footer>
 
 </body>
 </html>
