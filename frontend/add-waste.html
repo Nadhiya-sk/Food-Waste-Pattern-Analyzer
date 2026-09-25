@@ -1483,17 +1483,13 @@ document
 
         try{
 
-            const response =
-                await fetch(
-                    "https://food-waste-pattern-analyzer.onrender.com",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
+            const response = await fetch(
+    "https://food-waste-pattern-analyzer.onrender.com/api/waste",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
                         body:JSON.stringify({
 
                             date:date,
