@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>WASTELENS | Food Waste Analytics</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --bg: #05030b;
+    --bg2: #0b0616;
+
+    --violet: #9b5cff;
+    --pink: #ff4f91;
+    --aqua: #27f5e0;
+    --gold: #ffc857;
+
+    --white: #f7f4ff;
+    --muted: #aaa4bc;
+
+    --glass: rgba(14, 9, 29, 0.68);
+    --border: rgba(155, 92, 255, 0.25);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
 
 * {
     margin: 0;
@@ -15,749 +48,2891 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'DM Sans', sans-serif;
-    background: #06110c;
-    color: #f4f7f3;
+
+    font-family: "DM Sans", sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(155,92,255,.14),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(255,79,145,.10),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(39,245,224,.08),
+            transparent 30%
+        ),
+
+        #05030b;
+
+    color: var(--white);
+
     overflow-x: hidden;
 }
 
-:root {
-    --green: #06110c;
-    --card: #0b2117;
-    --lime: #b7f34a;
-    --light: #dfff9b;
-    --text: #f4f7f3;
-    --muted: #9eaaa3;
+
+/* =========================================================
+   FULL PAGE THREE.JS CANVAS
+========================================================= */
+
+#space3d {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: -10;
+
+    pointer-events: none;
+
+    background: #05030b;
 }
 
-/* NAVBAR */
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.ambient-grid {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -8;
+
+    pointer-events: none;
+
+    opacity: .28;
+
+    background-image:
+
+        linear-gradient(
+            rgba(155,92,255,.045) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(39,245,224,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    transform:
+
+        perspective(700px)
+
+        rotateX(58deg)
+
+        translateY(18%);
+
+    transform-origin: center bottom;
+}
+
+
+/* =========================================================
+   SCAN LINE
+========================================================= */
+
+.scanline {
+
+    position: fixed;
+
+    left: 0;
+    right: 0;
+
+    top: -15vh;
+
+    height: 15vh;
+
+    z-index: -7;
+
+    pointer-events: none;
+
+    background:
+
+        linear-gradient(
+            transparent,
+            rgba(155,92,255,.05),
+            transparent
+        );
+
+    animation: scan 8s linear infinite;
+}
+
+@keyframes scan {
+
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(120vh);
+    }
+
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
 
 nav {
-    height: 78px;
-    padding: 0 5%;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    width: 100%;
+
     display: flex;
-    align-items: center;
+
     justify-content: space-between;
-    border-bottom: 1px solid rgba(183,243,74,.12);
-    background: rgba(4,15,10,.92);
-    position: relative;
-    z-index: 10;
+
+    align-items: center;
+
+    padding: 22px 5%;
+
+    background:
+
+        rgba(5,3,11,.58);
+
+    border-bottom:
+
+        1px solid
+
+        rgba(155,92,255,.22);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
 }
 
+
+/* =========================================================
+   LOGO
+========================================================= */
+
 .logo {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 }
 
 .logo-icon {
-    font-size: 32px;
+
+    width: 44px;
+
+    height: 44px;
+
+    border-radius: 14px;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 22px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.3),
+            rgba(39,245,224,.12)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.3);
+
+    box-shadow:
+
+        0 0 25px
+
+        rgba(39,245,224,.18);
+
 }
 
 .logo h2 {
-    font-size: 23px;
-    letter-spacing: -1px;
+
+    font-size: 22px;
+
+    letter-spacing: 1px;
+
 }
 
-.logo span {
-    color: var(--lime);
+.logo h2 span {
+
+    color: var(--aqua);
+
+    text-shadow:
+
+        0 0 18px
+
+        rgba(39,245,224,.5);
+
 }
 
 .logo small {
+
     display: block;
-    color: #aeb9b2;
-    font-size: 9px;
-    letter-spacing: 3px;
+
     margin-top: 2px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+
 }
 
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
 .nav-links {
+
     display: flex;
-    gap: 32px;
+
     align-items: center;
+
+    gap: 24px;
 }
 
 .nav-links a {
-    color: #d8dedb;
+
+    color: var(--muted);
+
     text-decoration: none;
+
     font-size: 14px;
+
+    font-weight: 600;
+
     transition: .3s;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: var(--lime);
+
+    color: var(--aqua);
+
+    text-shadow:
+
+        0 0 15px
+
+        rgba(39,245,224,.5);
 }
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
 
 .add-btn {
-    background: var(--lime);
-    color: #09120c !important;
-    padding: 13px 21px;
+
+    padding: 11px 18px;
+
     border-radius: 30px;
-    font-weight: 700;
+
+    color: #08040f !important;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--aqua),
+            var(--violet)
+        );
+
+    box-shadow:
+
+        0 0 28px
+
+        rgba(39,245,224,.2);
 }
 
-/* HERO */
+
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero {
-    min-height: 570px;
-    padding: 75px 5%;
+
+    min-height: 760px;
+
+    padding: 90px 7%;
+
     display: grid;
-    grid-template-columns: 1.05fr .95fr;
+
+    grid-template-columns:
+
+        1fr 1fr;
+
+    gap: 60px;
+
     align-items: center;
+
     position: relative;
-    overflow: hidden;
 }
 
-.hero::before {
-    content: "";
-    position: absolute;
-    width: 550px;
-    height: 550px;
-    background: rgba(70,170,30,.12);
-    filter: blur(100px);
-    right: -150px;
-    top: 20px;
-}
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
 
 .hero-content {
-    position: relative;
-    z-index: 2;
+
+    padding: 45px;
+
+    border-radius: 32px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(14,9,29,.72),
+            rgba(8,5,18,.48)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.22);
+
+    box-shadow:
+
+        0 30px 90px rgba(0,0,0,.35),
+
+        inset 0 0 40px
+
+        rgba(155,92,255,.025);
+
+    backdrop-filter: blur(12px);
+
+    animation: heroIn 1s ease both;
 }
+
+@keyframes heroIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(30px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   TAG
+========================================================= */
 
 .tag {
-    color: var(--lime);
-    font-size: 14px;
-    letter-spacing: 1px;
-    margin-bottom: 18px;
+
+    display: inline-block;
+
+    padding: 9px 15px;
+
+    border-radius: 30px;
+
+    color: var(--aqua);
+
+    background:
+
+        rgba(39,245,224,.06);
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.22);
+
+    font-size: 12px;
+
+    letter-spacing: .5px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+
+        0 0 20px
+
+        rgba(39,245,224,.05);
 }
 
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
 .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(48px, 6vw, 78px);
-    line-height: 1.02;
-    max-width: 700px;
+
+    font-family:
+
+        "Playfair Display",
+        serif;
+
+    font-size:
+
+        clamp(48px, 5vw, 76px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 25px;
 }
 
 .hero h1 span {
-    color: var(--lime);
+
+    display: block;
+
+    color: var(--pink);
+
+    text-shadow:
+
+        0 0 25px
+
+        rgba(255,79,145,.3);
 }
+
+
+/* =========================================================
+   HERO TEXT
+========================================================= */
 
 .hero p {
-    max-width: 570px;
+
+    max-width: 600px;
+
     color: var(--muted);
-    font-size: 17px;
-    line-height: 1.7;
-    margin: 25px 0 32px;
+
+    line-height: 1.8;
+
+    font-size: 16px;
+
+    margin-bottom: 32px;
 }
 
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .buttons {
+
     display: flex;
-    gap: 16px;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
 }
 
 .primary,
 .secondary {
-    padding: 15px 24px;
-    border-radius: 30px;
+
     text-decoration: none;
+
+    padding: 14px 22px;
+
+    border-radius: 30px;
+
     font-weight: 700;
+
     transition: .3s;
 }
 
 .primary {
-    background: var(--lime);
-    color: #08110c;
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--violet),
+            var(--pink)
+        );
+
+    box-shadow:
+
+        0 0 30px
+
+        rgba(155,92,255,.28);
 }
 
 .secondary {
-    border: 1px solid #34513e;
-    color: white;
+
+    color: var(--aqua);
+
+    background:
+
+        rgba(39,245,224,.05);
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.35);
 }
 
 .primary:hover,
 .secondary:hover {
-    transform: translateY(-3px);
+
+    transform: translateY(-4px);
+
 }
 
-/* HERO IMAGE */
+
+/* =========================================================
+   HERO VISUAL
+========================================================= */
 
 .hero-visual {
+
+    min-height: 520px;
+
     position: relative;
-    height: 440px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 35px;
+
+    overflow: hidden;
+
+    background:
+
+        rgba(10,6,22,.38);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+
+        0 30px 100px
+
+        rgba(0,0,0,.3);
 }
 
-.food-image {
-    width: 390px;
-    height: 390px;
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.hero-visual::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 460px;
+
+    height: 460px;
+
     border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid rgba(183,243,74,.5);
-    box-shadow:
-        0 0 0 20px rgba(183,243,74,.04),
-        0 0 80px rgba(117,220,50,.2);
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(155,92,255,.23),
+            rgba(255,79,145,.08) 45%,
+            transparent 70%
+        );
+
+    filter: blur(8px);
+
+    animation: pulseCore 4s ease-in-out infinite;
 }
+
+@keyframes pulseCore {
+
+    0%,100% {
+
+        transform: scale(.9);
+
+        opacity: .55;
+    }
+
+    50% {
+
+        transform: scale(1.1);
+
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   CORE ORB
+========================================================= */
+
+.core-orb {
+
+    position: relative;
+
+    width: 320px;
+
+    height: 320px;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    transform-style: preserve-3d;
+
+    animation:
+
+        orbFloat 5s ease-in-out infinite;
+
+    filter:
+
+        drop-shadow(
+            0 0 35px
+            rgba(155,92,255,.5)
+        );
+}
+
+.core-orb::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 48px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle at 35% 25%,
+            white 0 2%,
+            var(--aqua) 8%,
+            var(--violet) 35%,
+            var(--pink) 65%,
+            #10071d 100%
+        );
+
+    box-shadow:
+
+        0 0 35px
+
+        rgba(155,92,255,.8),
+
+        0 0 90px
+
+        rgba(255,79,145,.3),
+
+        inset -25px -30px 50px
+
+        rgba(0,0,0,.55);
+}
+
+.core-orb::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 28px;
+
+    border-radius: 50%;
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.35);
+
+    box-shadow:
+
+        inset 0 0 35px
+
+        rgba(39,245,224,.08);
+}
+
+@keyframes orbFloat {
+
+    0%,100% {
+
+        transform:
+            translateY(0)
+            rotateZ(0deg);
+    }
+
+    50% {
+
+        transform:
+            translateY(-16px)
+            rotateZ(5deg);
+    }
+
+}
+
+
+/* =========================================================
+   ORBIT RINGS
+========================================================= */
+
+.core-ring {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border:
+
+        2px solid
+
+        rgba(39,245,224,.55);
+
+    box-shadow:
+
+        0 0 18px
+
+        rgba(39,245,224,.35);
+}
+
+.ring-a {
+
+    inset: 8px;
+
+    transform:
+
+        rotateX(67deg)
+        rotateZ(18deg);
+
+    animation:
+
+        spinA 7s linear infinite;
+}
+
+.ring-b {
+
+    inset: 0;
+
+    transform:
+
+        rotateY(66deg)
+        rotateZ(-20deg);
+
+    border-color:
+
+        rgba(255,79,145,.5);
+
+    animation:
+
+        spinB 9s linear infinite reverse;
+}
+
+.ring-c {
+
+    inset: 28px;
+
+    transform:
+
+        rotateX(65deg)
+        rotateY(30deg);
+
+    border-color:
+
+        rgba(255,200,87,.55);
+
+    animation:
+
+        spinC 6s linear infinite;
+}
+
+@keyframes spinA {
+
+    to {
+
+        transform:
+            rotateX(67deg)
+            rotateZ(378deg);
+    }
+}
+
+@keyframes spinB {
+
+    to {
+
+        transform:
+            rotateY(426deg)
+            rotateZ(-20deg);
+    }
+}
+
+@keyframes spinC {
+
+    to {
+
+        transform:
+            rotateX(425deg)
+            rotateY(30deg);
+    }
+}
+
+
+/* =========================================================
+   CORE TEXT
+========================================================= */
+
+.core-center {
+
+    position: relative;
+
+    z-index: 5;
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    letter-spacing: 6px;
+
+    color: white;
+
+    text-shadow:
+
+        0 0 8px white,
+
+        0 0 25px var(--aqua),
+
+        0 0 45px var(--pink);
+}
+
+
+/* =========================================================
+   FLOATING CARDS
+========================================================= */
 
 .floating-card {
+
     position: absolute;
-    background: rgba(8,30,20,.94);
-    border: 1px solid rgba(183,243,74,.35);
+
+    padding: 16px 20px;
+
     border-radius: 18px;
-    padding: 18px 20px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 15px 40px rgba(0,0,0,.3);
-}
 
-.card-one {
-    top: 35px;
-    left: 10px;
-}
+    background:
 
-.card-two {
-    right: 0;
-    bottom: 45px;
+        rgba(12,7,26,.75);
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.3);
+
+    box-shadow:
+
+        0 0 30px
+
+        rgba(39,245,224,.08);
+
+    backdrop-filter: blur(14px);
+
+    z-index: 10;
 }
 
 .floating-card small {
+
+    display: block;
+
     color: var(--muted);
+
+    margin-bottom: 5px;
 }
 
 .floating-card strong {
-    display: block;
-    color: var(--lime);
-    font-size: 25px;
-    margin-top: 5px;
+
+    color: var(--aqua);
 }
 
-/* FEATURES */
+.card-one {
+
+    top: 100px;
+
+    left: 30px;
+
+    animation:
+        floatOne 4s ease-in-out infinite;
+}
+
+.card-two {
+
+    right: 30px;
+
+    bottom: 100px;
+
+    animation:
+        floatTwo 5s ease-in-out infinite;
+}
+
+@keyframes floatOne {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes floatTwo {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(15px);
+    }
+}
+
+
+/* =========================================================
+   COMMON SECTIONS
+========================================================= */
+
+.features,
+.process,
+.impact {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 100px 7%;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
 
 .features {
-    padding: 70px 5%;
+
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap: 25px;
 }
 
 .feature {
-    background: linear-gradient(145deg,#0c291b,#081810);
-    border: 1px solid #183c28;
-    border-radius: 25px;
-    padding: 32px;
+
+    padding: 35px;
+
+    min-height: 260px;
+
+    border-radius: 28px;
+
+    background:
+
+        rgba(12,7,26,.58);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    backdrop-filter: blur(12px);
+
     transition: .35s;
-    position: relative;
-    overflow: hidden;
 }
 
 .feature:hover {
-    transform: translateY(-8px);
-    border-color: var(--lime);
+
+    transform:
+        translateY(-8px);
+
+    border-color:
+
+        rgba(39,245,224,.35);
+
+    box-shadow:
+
+        0 0 35px
+
+        rgba(155,92,255,.13);
 }
 
 .feature-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--lime);
-    color: #07110b;
-    font-size: 25px;
-    margin-bottom: 25px;
+
+    font-size: 38px;
+
+    margin-bottom: 20px;
 }
 
 .feature h3 {
-    font-size: 22px;
+
+    font-size: 24px;
+
     margin-bottom: 12px;
 }
 
 .feature p {
+
     color: var(--muted);
-    line-height: 1.6;
+
+    line-height: 1.7;
 }
 
-/* PROCESS */
+
+/* =========================================================
+   PROCESS
+========================================================= */
 
 .process {
-    padding: 80px 5%;
+
     text-align: center;
-    background: #07150e;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(155,92,255,.025),
+            transparent
+        );
 }
 
 .section-label {
-    color: var(--lime);
+
+    color: var(--aqua);
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+
     text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 12px;
+
+    margin-bottom: 15px;
 }
 
 .process h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 45px;
-    margin: 12px 0 45px;
+
+    font-family:
+
+        "Playfair Display",
+        serif;
+
+    font-size: 48px;
+
+    margin-bottom: 55px;
 }
 
 .process h2 span {
-    color: var(--lime);
+
+    color: var(--pink);
+
+    text-shadow:
+
+        0 0 22px
+
+        rgba(255,79,145,.3);
 }
 
 .steps {
+
     display: flex;
-    justify-content: center;
+
     align-items: center;
-    gap: 15px;
+
+    justify-content: center;
+
+    gap: 20px;
+
     flex-wrap: wrap;
 }
 
 .step {
-    width: 150px;
+
+    min-width: 160px;
+
+    padding: 28px 20px;
+
+    border-radius: 25px;
+
+    background:
+
+        rgba(12,7,26,.58);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    transition: .3s;
+}
+
+.step:hover {
+
+    transform:
+
+        translateY(-7px);
+
+    border-color:
+
+        rgba(39,245,224,.4);
 }
 
 .step-circle {
+
     width: 65px;
+
     height: 65px;
+
     margin: auto;
-    border: 1px solid var(--lime);
+
+    margin-bottom: 15px;
+
     border-radius: 50%;
+
     display: grid;
+
     place-items: center;
-    color: var(--lime);
-    font-size: 23px;
+
+    font-size: 28px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.22),
+            rgba(39,245,224,.08)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.3);
+
+    box-shadow:
+
+        0 0 25px
+
+        rgba(155,92,255,.12);
 }
 
 .step h4 {
-    margin-top: 14px;
+
+    margin-bottom: 8px;
 }
 
 .step p {
+
     color: var(--muted);
-    font-size: 12px;
-    margin-top: 5px;
+
+    font-size: 13px;
 }
 
 .arrow {
-    color: var(--lime);
-    font-size: 25px;
+
+    color: var(--aqua);
+
+    font-size: 30px;
 }
 
-/* IMPACT */
+
+/* =========================================================
+   IMPACT
+========================================================= */
 
 .impact {
-    padding: 80px 5%;
+
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 70px;
+
     align-items: center;
 }
 
 .impact h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    line-height: 1.15;
+
+    font-family:
+
+        "Playfair Display",
+        serif;
+
+    font-size: 50px;
+
+    line-height: 1.1;
+
+    margin-bottom: 22px;
 }
 
 .impact h2 span {
-    color: var(--lime);
+
+    color: var(--pink);
 }
 
 .impact p {
+
     color: var(--muted);
-    line-height: 1.7;
-    margin-top: 20px;
+
     max-width: 550px;
+
+    line-height: 1.8;
 }
 
 .stats {
+
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap: 15px;
 }
 
 .stat {
-    padding: 25px 15px;
+
+    padding: 28px 20px;
+
     text-align: center;
-    background: var(--card);
-    border: 1px solid #183c28;
-    border-radius: 20px;
+
+    border-radius: 22px;
+
+    background:
+
+        rgba(12,7,26,.6);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
 }
 
 .stat b {
+
     display: block;
-    font-size: 28px;
-    color: var(--lime);
+
+    font-size: 30px;
+
+    color: var(--aqua);
+
+    text-shadow:
+
+        0 0 15px
+
+        rgba(39,245,224,.3);
+
+    margin-bottom: 8px;
 }
 
 .stat span {
+
     color: var(--muted);
+
     font-size: 12px;
 }
 
-/* CTA */
+
+/* =========================================================
+   CTA
+========================================================= */
 
 .cta {
-    margin: 30px 5% 70px;
-    padding: 35px 45px;
-    border-radius: 25px;
-    background: linear-gradient(100deg,var(--lime),#8edb38);
-    color: #08110c;
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 50px 7% 100px;
+
+    padding: 45px;
+
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    border-radius: 30px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.13),
+            rgba(255,79,145,.07)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.25);
+
+    box-shadow:
+
+        0 0 70px
+
+        rgba(155,92,255,.08);
+
+    backdrop-filter: blur(12px);
 }
 
 .cta h2 {
-    font-size: 25px;
+
+    font-size: 32px;
+
+    margin-bottom: 8px;
 }
 
 .cta p {
-    margin-top: 5px;
+
+    color: var(--muted);
 }
 
 .cta a {
-    background: #07130d;
-    color: white;
-    padding: 14px 25px;
-    border-radius: 25px;
+
+    display: inline-block;
+
     text-decoration: none;
+
+    color: white;
+
     font-weight: 700;
+
+    padding: 14px 24px;
+
+    border-radius: 30px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--violet),
+            var(--pink)
+        );
+
+    box-shadow:
+
+        0 0 30px
+
+        rgba(155,92,255,.25);
 }
 
-/* FOOTER */
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 footer {
-    padding: 35px 5%;
-    border-top: 1px solid #183023;
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 35px 7%;
+
     display: flex;
+
     justify-content: space-between;
+
     color: var(--muted);
+
     font-size: 13px;
+
+    border-top:
+
+        1px solid
+
+        rgba(155,92,255,.15);
+
+    background:
+
+        rgba(5,3,11,.7);
+
+    backdrop-filter: blur(12px);
 }
 
-/* MOBILE */
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:850px) {
 
+    nav {
+
+        padding: 17px 5%;
+    }
+
     .nav-links {
+
         display: none;
     }
 
     .hero {
+
         grid-template-columns: 1fr;
+
+        padding: 60px 5%;
+
+        gap: 30px;
+    }
+
+    .hero-content {
+
+        padding: 30px 23px;
+
         text-align: center;
     }
 
+    .hero h1 {
+
+        font-size: 48px;
+    }
+
     .hero p {
+
         margin-left: auto;
+
         margin-right: auto;
     }
 
     .buttons {
+
         justify-content: center;
     }
 
     .hero-visual {
-        margin-top: 35px;
+
+        min-height: 430px;
     }
 
-    .food-image {
-        width: 300px;
-        height: 300px;
+    .core-orb {
+
+        width: 250px;
+
+        height: 250px;
+    }
+
+    .core-orb::before {
+
+        inset: 38px;
+    }
+
+    .core-center {
+
+        font-size: 32px;
+    }
+
+    .card-one {
+
+        top: 35px;
+
+        left: 15px;
+    }
+
+    .card-two {
+
+        right: 15px;
+
+        bottom: 35px;
     }
 
     .features {
+
         grid-template-columns: 1fr;
+
+        padding: 70px 5%;
+    }
+
+    .process,
+    .impact {
+
+        padding: 70px 5%;
+    }
+
+    .process h2 {
+
+        font-size: 40px;
     }
 
     .impact {
+
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+    }
+
+    .impact h2 {
+
+        font-size: 42px;
+    }
+
+    .stats {
+
         grid-template-columns: 1fr;
     }
 
     .cta {
+
+        margin:
+
+            30px 5% 70px;
+
+        padding: 30px 24px;
+
         flex-direction: column;
-        gap: 20px;
+
         text-align: center;
     }
 
     footer {
+
+        padding: 30px 5%;
+
         flex-direction: column;
-        gap: 10px;
+
         text-align: center;
+
+        gap: 10px;
     }
+
+    .ambient-grid {
+
+        background-size: 38px 38px;
+    }
+
 }
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: .001ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+    }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- NAVBAR -->
+
+<!-- =====================================================
+     THREE.JS BACKGROUND
+===================================================== -->
+
+<canvas id="space3d"></canvas>
+
+<div class="ambient-grid"></div>
+
+<div class="scanline"></div>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
 <nav>
 
     <div class="logo">
-        <div class="logo-icon">🌿</div>
+
+        <div class="logo-icon">
+            🌿
+        </div>
 
         <div>
-            <h2>WASTE<span>LENS</span></h2>
-            <small>FOOD WASTE ANALYTICS</small>
+
+            <h2>
+                WASTE<span>LENS</span>
+            </h2>
+
+            <small>
+                FOOD WASTE ANALYTICS
+            </small>
+
         </div>
+
     </div>
+
 
     <div class="nav-links">
 
-        <a href="index.html" class="active">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="add-waste.html">Add Waste</a>
-        <a href="records.html">Records</a>
-        <a href="analysis.html">Analysis</a>
+        <a
+            href="index.html"
+            class="active">
+            Home
+        </a>
 
-        <a href="add-waste.html" class="add-btn">＋ Add Waste</a>
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="add-waste.html">
+            Add Waste
+        </a>
+
+        <a href="records.html">
+            Records
+        </a>
+
+        <a href="analysis.html">
+            Analysis
+        </a>
+
+        <a
+            href="add-waste.html"
+            class="add-btn">
+
+            ＋ Add Waste
+
+        </a>
 
     </div>
 
 </nav>
 
 
-<!-- HERO -->
+
+<!-- =====================================================
+     HERO
+===================================================== -->
 
 <section class="hero">
+
 
     <div class="hero-content">
 
         <div class="tag">
-            Smarter Tracking • Better Decisions • Less Waste
+
+            Smarter Tracking
+            •
+            Better Decisions
+            •
+            Less Waste
+
         </div>
 
+
         <h1>
+
             Turn Food Waste Into
-            <span>Smart Decisions.</span>
+
+            <span>
+                Smart Decisions.
+            </span>
+
         </h1>
 
+
         <p>
+
             Track food waste, discover hidden patterns,
             and understand where your money is being lost.
+
         </p>
+
 
         <div class="buttons">
 
-            <a href="dashboard.html" class="primary">
+            <a
+                href="dashboard.html"
+                class="primary">
+
                 📊 Explore Dashboard →
+
             </a>
 
-            <a href="add-waste.html" class="secondary">
+
+            <a
+                href="add-waste.html"
+                class="secondary">
+
                 ＋ Add Waste
+
             </a>
 
         </div>
 
     </div>
 
+
+
+    <!-- =================================================
+         3D CORE
+    ================================================= -->
 
     <div class="hero-visual">
 
-        <img 
-    src="food-image.jpg" 
-    class="food-image" 
-    alt="Food waste analytics" 
->
-        <div class="floating-card card-one">
-            <small>Waste Pattern</small>
-            <strong>↗ Analysis</strong>
+
+        <div class="core-orb">
+
+            <div class="core-ring ring-a"></div>
+
+            <div class="core-ring ring-b"></div>
+
+            <div class="core-ring ring-c"></div>
+
+            <div class="core-center">
+                WL
+            </div>
+
         </div>
 
-        <div class="floating-card card-two">
-            <small>Less Waste</small>
-            <strong>More Value</strong>
+
+        <div class="floating-card card-one">
+
+            <small>
+                Waste Pattern
+            </small>
+
+            <strong>
+                ↗ Analysis
+            </strong>
+
         </div>
+
+
+        <div class="floating-card card-two">
+
+            <small>
+                Less Waste
+            </small>
+
+            <strong>
+                More Value
+            </strong>
+
+        </div>
+
 
     </div>
 
 </section>
 
 
-<!-- FEATURES -->
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
 
 <section class="features">
 
+
     <div class="feature">
 
-        <div class="feature-icon">🍽️</div>
+        <div class="feature-icon">
+            🍽️
+        </div>
 
-        <h3>Track</h3>
+        <h3>
+            Track
+        </h3>
 
         <p>
+
             Record daily food waste with simple
             and structured information.
+
         </p>
 
     </div>
 
 
+
     <div class="feature">
 
-        <div class="feature-icon">📈</div>
+        <div class="feature-icon">
+            📈
+        </div>
 
-        <h3>Analyze</h3>
+        <h3>
+            Analyze
+        </h3>
 
         <p>
+
             Find waste patterns, peak meals,
             and frequently wasted food items.
+
         </p>
 
     </div>
+
 
 
     <div class="feature">
 
-        <div class="feature-icon">🌿</div>
+        <div class="feature-icon">
+            🌿
+        </div>
 
-        <h3>Reduce</h3>
+        <h3>
+            Reduce
+        </h3>
 
         <p>
+
             Use data-driven insights to reduce
             food waste, cost and resources.
+
         </p>
 
     </div>
+
 
 </section>
 
 
-<!-- PROCESS -->
+
+<!-- =====================================================
+     PROCESS
+===================================================== -->
 
 <section class="process">
 
+
     <div class="section-label">
+
         The WASTELENS Process
+
     </div>
 
+
     <h2>
-        Your Waste Has a <span>Pattern.</span>
+
+        Your Waste Has a
+        <span>
+            Pattern.
+        </span>
+
     </h2>
+
 
     <div class="steps">
 
-        <div class="step">
-            <div class="step-circle">🍚</div>
-            <h4>Food</h4>
-            <p>What gets wasted?</p>
-        </div>
-
-        <div class="arrow">→</div>
 
         <div class="step">
-            <div class="step-circle">🗃️</div>
-            <h4>Data</h4>
-            <p>We collect it</p>
+
+            <div class="step-circle">
+                🍚
+            </div>
+
+            <h4>
+                Food
+            </h4>
+
+            <p>
+                Food is prepared
+            </p>
+
         </div>
 
-        <div class="arrow">→</div>
+
+        <div class="arrow">
+            →
+        </div>
+
 
         <div class="step">
-            <div class="step-circle">🔍</div>
-            <h4>Pattern</h4>
-            <p>We find trends</p>
+
+            <div class="step-circle">
+                📝
+            </div>
+
+            <h4>
+                Track
+            </h4>
+
+            <p>
+                We collect it
+            </p>
+
         </div>
 
-        <div class="arrow">→</div>
+
+        <div class="arrow">
+            →
+        </div>
+
 
         <div class="step">
-            <div class="step-circle">💡</div>
-            <h4>Insight</h4>
-            <p>You get answers</p>
+
+            <div class="step-circle">
+                🔍
+            </div>
+
+            <h4>
+                Pattern
+            </h4>
+
+            <p>
+                We find trends
+            </p>
+
         </div>
 
-        <div class="arrow">→</div>
+
+        <div class="arrow">
+            →
+        </div>
+
 
         <div class="step">
-            <div class="step-circle">🌱</div>
-            <h4>Action</h4>
-            <p>Reduce the waste</p>
+
+            <div class="step-circle">
+                💡
+            </div>
+
+            <h4>
+                Insight
+            </h4>
+
+            <p>
+                You get answers
+            </p>
+
         </div>
+
+
+        <div class="arrow">
+            →
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-circle">
+                🌱
+            </div>
+
+            <h4>
+                Action
+            </h4>
+
+            <p>
+                Reduce the waste
+            </p>
+
+        </div>
+
 
     </div>
 
 </section>
 
 
-<!-- IMPACT -->
+
+<!-- =====================================================
+     IMPACT
+===================================================== -->
 
 <section class="impact">
+
 
     <div>
 
         <div class="section-label">
+
             Small Changes. Big Impact.
+
         </div>
 
+
         <h2>
+
             Less Food Waste.
+
             <br>
-            A <span>Smarter Tomorrow.</span>
+
+            A
+            <span>
+                Smarter Tomorrow.
+            </span>
+
         </h2>
 
+
         <p>
+
             Every gram of food saved means less money lost,
             better resource usage and a step towards a
             more sustainable future.
+
         </p>
 
     </div>
 
 
+
     <div class="stats">
 
-        <div class="stat">
-            <b>0+</b>
-            <span>Kg Waste Tracked</span>
-        </div>
 
         <div class="stat">
-            <b>₹0+</b>
-            <span>Money Loss</span>
+
+            <b>
+                0+
+            </b>
+
+            <span>
+                Kg Waste Tracked
+            </span>
+
         </div>
 
+
         <div class="stat">
-            <b>0+</b>
-            <span>Records Analyzed</span>
+
+            <b>
+                ₹0+
+            </b>
+
+            <span>
+                Money Loss
+            </span>
+
         </div>
+
+
+        <div class="stat">
+
+            <b>
+                0+
+            </b>
+
+            <span>
+                Records Analyzed
+            </span>
+
+        </div>
+
 
     </div>
 
 </section>
 
 
-<!-- CTA -->
+
+<!-- =====================================================
+     CTA
+===================================================== -->
 
 <section class="cta">
 
+
     <div>
-        <h2>🌿 Let's make food count.</h2>
-        <p>Track. Analyze. Reduce.</p>
+
+        <h2>
+            🌿 Let's make food count.
+        </h2>
+
+        <p>
+            Track. Analyze. Reduce.
+        </p>
+
     </div>
 
+
     <a href="add-waste.html">
+
         Get Started →
+
     </a>
 
 </section>
 
 
-<!-- FOOTER -->
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
     <div>
+
         © 2026 WASTELENS
+
     </div>
 
+
     <div>
+
         FOOD WASTE ANALYTICS
+
     </div>
 
 </footer>
 
+
+
+<!-- =====================================================
+     THREE.JS
+===================================================== -->
+
+<script type="module">
+
+import * as THREE from
+"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("space3d");
+
+
+/* =====================================================
+   SCENE
+===================================================== */
+
+const scene =
+    new THREE.Scene();
+
+
+scene.fog =
+    new THREE.FogExp2(
+        0x05030b,
+        0.035
+    );
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+const camera =
+    new THREE.PerspectiveCamera(
+
+        55,
+
+        window.innerWidth /
+        window.innerHeight,
+
+        0.1,
+
+        100
+
+    );
+
+
+camera.position.z = 13;
+
+
+/* =====================================================
+   RENDERER
+===================================================== */
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        canvas: canvas,
+
+        antialias: true,
+
+        alpha: true
+
+    });
+
+
+renderer.setPixelRatio(
+
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+
+);
+
+
+renderer.setSize(
+
+    window.innerWidth,
+
+    window.innerHeight
+
+);
+
+
+
+/* =====================================================
+   MAIN GROUP
+===================================================== */
+
+const world =
+    new THREE.Group();
+
+
+scene.add(world);
+
+
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+const particleCount =
+    window.innerWidth < 700
+        ? 700
+        : 1300;
+
+
+const positions =
+    new Float32Array(
+        particleCount * 3
+    );
+
+
+for (
+    let i = 0;
+    i < particleCount;
+    i++
+) {
+
+    const radius =
+        7 + Math.random() * 18;
+
+
+    const theta =
+        Math.random() *
+        Math.PI * 2;
+
+
+    const phi =
+        Math.acos(
+            2 * Math.random() - 1
+        );
+
+
+    positions[i * 3] =
+
+        radius *
+        Math.sin(phi) *
+        Math.cos(theta);
+
+
+    positions[i * 3 + 1] =
+
+        radius *
+        Math.sin(phi) *
+        Math.sin(theta);
+
+
+    positions[i * 3 + 2] =
+
+        radius *
+        Math.cos(phi);
+
+}
+
+
+
+const particleGeometry =
+    new THREE.BufferGeometry();
+
+
+particleGeometry.setAttribute(
+
+    "position",
+
+    new THREE.BufferAttribute(
+        positions,
+        3
+    )
+
+);
+
+
+const particleMaterial =
+    new THREE.PointsMaterial({
+
+        color: 0x9b5cff,
+
+        size: 0.045,
+
+        transparent: true,
+
+        opacity: .72,
+
+        blending:
+            THREE.AdditiveBlending,
+
+        depthWrite: false
+
+    });
+
+
+const particles =
+    new THREE.Points(
+
+        particleGeometry,
+
+        particleMaterial
+
+    );
+
+
+world.add(particles);
+
+
+
+/* =====================================================
+   3D WIREFRAME CORE
+===================================================== */
+
+const coreGeometry =
+    new THREE.IcosahedronGeometry(
+        2.3,
+        2
+    );
+
+
+const coreMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color: 0x9b5cff,
+
+        wireframe: true,
+
+        transparent: true,
+
+        opacity: .23
+
+    });
+
+
+const core =
+    new THREE.Mesh(
+
+        coreGeometry,
+
+        coreMaterial
+
+    );
+
+
+world.add(core);
+
+
+
+/* =====================================================
+   INNER CORE
+===================================================== */
+
+const innerGeometry =
+    new THREE.SphereGeometry(
+        1.45,
+        32,
+        32
+    );
+
+
+const innerMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color: 0xff4f91,
+
+        transparent: true,
+
+        opacity: .08,
+
+        wireframe: true
+
+    });
+
+
+const innerCore =
+    new THREE.Mesh(
+
+        innerGeometry,
+
+        innerMaterial
+
+    );
+
+
+world.add(innerCore);
+
+
+
+/* =====================================================
+   ORBIT RINGS
+===================================================== */
+
+const ringSettings = [
+
+    {
+        radius: 3.2,
+        color: 0x27f5e0,
+        x: 1.1,
+        z: .3
+    },
+
+    {
+        radius: 4.1,
+        color: 0xff4f91,
+        x: .7,
+        z: -.5
+    },
+
+    {
+        radius: 5,
+        color: 0xffc857,
+        x: 1.4,
+        z: .8
+    }
+
+];
+
+
+const rings = [];
+
+
+ringSettings.forEach(
+
+    (item, index) => {
+
+        const geometry =
+            new THREE.TorusGeometry(
+
+                item.radius,
+
+                .012 +
+                index * .004,
+
+                8,
+
+                180
+
+            );
+
+
+        const material =
+            new THREE.MeshBasicMaterial({
+
+                color: item.color,
+
+                transparent: true,
+
+                opacity: .38,
+
+                blending:
+                    THREE.AdditiveBlending
+
+            });
+
+
+        const ring =
+            new THREE.Mesh(
+
+                geometry,
+
+                material
+
+            );
+
+
+        ring.rotation.x =
+            item.x;
+
+        ring.rotation.z =
+            item.z;
+
+
+        world.add(ring);
+
+        rings.push(ring);
+
+    }
+
+);
+
+
+
+/* =====================================================
+   FLOATING DATA CUBES
+===================================================== */
+
+const cubeGroup =
+    new THREE.Group();
+
+
+world.add(cubeGroup);
+
+
+for (
+    let i = 0;
+    i < 32;
+    i++
+) {
+
+    const size =
+        .04 +
+        Math.random() * .12;
+
+
+    const colors = [
+
+        0x27f5e0,
+
+        0xff4f91,
+
+        0x9b5cff,
+
+        0xffc857
+
+    ];
+
+
+    const cube =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                size,
+                size,
+                size
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:
+                    colors[
+                        i % colors.length
+                    ],
+
+                transparent: true,
+
+                opacity: .75
+
+            })
+
+        );
+
+
+    const radius =
+        3 +
+        Math.random() * 8;
+
+
+    const angle =
+        Math.random() *
+        Math.PI * 2;
+
+
+    cube.position.set(
+
+        Math.cos(angle) *
+        radius,
+
+        (Math.random() - .5) *
+        7,
+
+        Math.sin(angle) *
+        radius
+
+    );
+
+
+    cube.userData.speed =
+        .001 +
+        Math.random() *
+        .004;
+
+
+    cube.userData.float =
+        Math.random() *
+        Math.PI *
+        2;
+
+
+    cubeGroup.add(cube);
+
+}
+
+
+
+/* =====================================================
+   MOUSE
+===================================================== */
+
+const pointer = {
+
+    x: 0,
+
+    y: 0
+
+};
+
+
+window.addEventListener(
+
+    "pointermove",
+
+    event => {
+
+        pointer.x =
+
+            (
+                event.clientX /
+                window.innerWidth
+                - .5
+            ) * 2;
+
+
+        pointer.y =
+
+            (
+                event.clientY /
+                window.innerHeight
+                - .5
+            ) * 2;
+
+    }
+
+);
+
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+let time = 0;
+
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    time += .003;
+
+
+    /* Particles */
+
+    particles.rotation.y += .00025;
+
+    particles.rotation.x += .00007;
+
+
+
+    /* Main core */
+
+    core.rotation.x += .002;
+
+    core.rotation.y += .003;
+
+
+
+    /* Inner core */
+
+    innerCore.rotation.y -= .002;
+
+    innerCore.rotation.x += .001;
+
+
+
+    /* Rings */
+
+    rings.forEach(
+
+        (ring, index) => {
+
+            ring.rotation.z +=
+                .0015 *
+                (index + 1);
+
+            ring.rotation.y +=
+                .0007 *
+                (index + 1);
+
+        }
+
+    );
+
+
+
+    /* Cubes */
+
+    cubeGroup.children.forEach(
+
+        (cube, index) => {
+
+            cube.rotation.x +=
+                cube.userData.speed;
+
+            cube.rotation.y +=
+                cube.userData.speed * 1.4;
+
+
+            cube.position.y +=
+
+                Math.sin(
+                    time * 3 +
+                    index
+                ) * .0008;
+
+        }
+
+    );
+
+
+
+    /* Mouse movement */
+
+    world.rotation.y +=
+
+        (
+            pointer.x * .045 -
+            world.rotation.y
+        ) * .018;
+
+
+    world.rotation.x +=
+
+        (
+            -pointer.y * .035 -
+            world.rotation.x
+        ) * .018;
+
+
+
+    /* Render */
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+function resize() {
+
+    camera.aspect =
+
+        window.innerWidth /
+        window.innerHeight;
+
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+
+        window.innerWidth,
+
+        window.innerHeight
+
+    );
+
+
+    renderer.setPixelRatio(
+
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+</script>
+
+
 </body>
+
 </html>

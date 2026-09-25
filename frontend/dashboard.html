@@ -1,522 +1,2506 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>WASTELENS | Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+<title>WASTELENS | Dashboard</title>
 
-        body {
-            background: #0b1712;
-            color: #f1f8f4;
-        }
+<style>
 
-        /* SIDEBAR */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .sidebar {
-            position: fixed;
-            width: 230px;
-            height: 100vh;
-            background: #10251b;
-            padding: 30px 20px;
-            border-right: 1px solid #284936;
-        }
+:root {
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #b7f34a;
-            margin-bottom: 45px;
-        }
+    --bg: #05030b;
+    --bg2: #0b0616;
 
-        .logo span {
-            display: block;
-            color: #91a89b;
-            font-size: 11px;
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
+    --violet: #9b5cff;
+    --pink: #ff4f91;
+    --aqua: #27f5e0;
+    --gold: #ffc857;
 
-        .menu a {
-            display: block;
-            text-decoration: none;
-            color: #a9bdb1;
-            padding: 14px 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
+    --white: #f7f4ff;
+    --muted: #aaa4bc;
 
-        .menu a:hover,
-        .menu .active {
-            background: #b7f34a;
-            color: #0b1712;
-        }
+    --glass: rgba(12, 7, 26, 0.72);
 
-        /* MAIN */
+    --border: rgba(155, 92, 255, 0.22);
 
-        .main {
-            margin-left: 230px;
-            padding: 35px 45px;
-        }
+}
 
-        .top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 35px;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        .top h1 {
-            font-size: 30px;
-        }
+body {
 
-        .top p {
-            color: #91a89b;
-            margin-top: 7px;
-        }
+    min-height: 100vh;
 
-        .profile {
-            background: #162d21;
-            padding: 10px 18px;
-            border-radius: 30px;
-        }
+    font-family:
+        Arial,
+        sans-serif;
 
-        /* CARDS */
+    color: var(--white);
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
+    background:
 
-        .card {
-            background: #10251b;
-            border: 1px solid #284936;
-            padding: 23px;
-            border-radius: 16px;
-        }
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(155,92,255,.13),
+            transparent 30%
+        ),
 
-        .card-title {
-            color: #91a89b;
-            font-size: 13px;
-            margin-bottom: 14px;
-        }
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(255,79,145,.08),
+            transparent 28%
+        ),
 
-        .card-value {
-            font-size: 28px;
-            font-weight: bold;
-        }
+        #05030b;
 
-        .card-small {
-            color: #b7f34a;
-            font-size: 12px;
-            margin-top: 10px;
-        }
+    overflow-x: hidden;
 
-        /* GRID */
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-top: 25px;
-        }
 
-        .box {
-            background: #10251b;
-            border: 1px solid #284936;
-            border-radius: 16px;
-            padding: 25px;
-        }
+/* =========================================================
+   THREE.JS CANVAS
+========================================================= */
 
-        .box h2 {
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
+#dashboard3d {
 
-        .box-sub {
-            color: #91a89b;
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
+    position: fixed;
 
-        /* CHART */
+    inset: 0;
 
-        .chart {
-            height: 190px;
-            display: flex;
-            align-items: end;
-            justify-content: space-around;
-            gap: 15px;
-            padding-top: 20px;
-        }
+    width: 100vw;
+    height: 100vh;
 
-        .bar {
-            width: 35px;
-            background: #b7f34a;
-            border-radius: 7px 7px 0 0;
-            position: relative;
-        }
+    z-index: -10;
 
-        .bar span {
-            position: absolute;
-            bottom: -25px;
-            left: 8px;
-            color: #91a89b;
-            font-size: 11px;
-        }
+    pointer-events: none;
 
-        /* PATTERN */
+}
 
-        .pattern {
-            background: #162d21;
-            padding: 17px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
 
-        .pattern strong {
-            display: block;
-            margin-bottom: 6px;
-        }
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
 
-        .pattern small {
-            color: #91a89b;
-        }
+.background-grid {
 
-        /* RECOMMENDATION */
+    position: fixed;
 
-        .recommendation {
-            margin-top: 25px;
-            background: #b7f34a;
-            color: #0b1712;
-            border-radius: 16px;
-            padding: 25px;
-        }
+    inset: 0;
 
-        .recommendation h2 {
-            margin-bottom: 8px;
-        }
+    z-index: -8;
 
-        .recommendation p {
-            line-height: 1.6;
-        }
+    pointer-events: none;
 
-        /* RESPONSIVE */
+    opacity: .25;
 
-        @media (max-width: 1000px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
+    background-image:
 
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        linear-gradient(
+            rgba(155,92,255,.045) 1px,
+            transparent 1px
+        ),
 
-        @media (max-width: 700px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
+        linear-gradient(
+            90deg,
+            rgba(39,245,224,.035) 1px,
+            transparent 1px
+        );
 
-            .main {
-                margin-left: 0;
-                padding: 25px;
-            }
+    background-size: 55px 55px;
 
-            .cards {
-                grid-template-columns: 1fr;
-            }
+    transform:
 
-            .top {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-        }
-    </style>
+        perspective(700px)
+        rotateX(60deg)
+        translateY(20%);
+
+    transform-origin:
+        center bottom;
+
+}
+
+
+/* =========================================================
+   SCAN EFFECT
+========================================================= */
+
+.scan {
+
+    position: fixed;
+
+    left: 0;
+    right: 0;
+
+    top: -20vh;
+
+    height: 20vh;
+
+    pointer-events: none;
+
+    z-index: -7;
+
+    background:
+
+        linear-gradient(
+            transparent,
+            rgba(39,245,224,.05),
+            transparent
+        );
+
+    animation:
+        scanMove 8s linear infinite;
+
+}
+
+@keyframes scanMove {
+
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(120vh);
+    }
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    left: 18px;
+    top: 18px;
+    bottom: 18px;
+
+    width: 235px;
+
+    padding: 28px 18px;
+
+    border-radius: 28px;
+
+    background:
+
+        rgba(9,5,20,.78);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.23);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+
+        0 25px 80px
+        rgba(0,0,0,.35),
+
+        inset 0 0 35px
+        rgba(155,92,255,.025);
+
+    z-index: 100;
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    color: var(--white);
+
+    margin-bottom: 8px;
+
+}
+
+.logo span {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--aqua);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   SIDEBAR LINE
+========================================================= */
+
+.sidebar-line {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin:
+
+        28px 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(155,92,255,.4),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.menu a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+
+    color: var(--muted);
+
+    padding: 14px 15px;
+
+    margin-bottom: 8px;
+
+    border-radius: 14px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .3s;
+
+}
+
+.menu a:hover {
+
+    color: var(--aqua);
+
+    background:
+
+        rgba(39,245,224,.055);
+
+    transform:
+        translateX(4px);
+
+}
+
+.menu .active {
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.25),
+            rgba(255,79,145,.12)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.28);
+
+    box-shadow:
+
+        0 0 25px
+
+        rgba(155,92,255,.08);
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.sidebar-status {
+
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+
+    bottom: 22px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background:
+
+        rgba(39,245,224,.045);
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.15);
+
+}
+
+.status-dot {
+
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: var(--aqua);
+
+    box-shadow:
+
+        0 0 12px
+
+        var(--aqua);
+
+    margin-right: 7px;
+
+}
+
+.sidebar-status small {
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    margin-left: 280px;
+
+    padding:
+
+        40px 45px 70px;
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.top {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
+}
+
+.top h1 {
+
+    font-size: 31px;
+
+    letter-spacing: -.5px;
+
+}
+
+.top p {
+
+    color: var(--muted);
+
+    margin-top: 8px;
+
+    font-size: 14px;
+
+}
+
+.profile {
+
+    padding: 11px 18px;
+
+    border-radius: 30px;
+
+    background:
+
+        rgba(12,7,26,.7);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.22);
+
+    backdrop-filter:
+        blur(12px);
+
+    color: var(--white);
+
+}
+
+
+/* =========================================================
+   DASHBOARD TITLE BADGE
+========================================================= */
+
+.dashboard-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 14px;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    color: var(--aqua);
+
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+
+    background:
+
+        rgba(39,245,224,.05);
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.17);
+
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px;
+
+    min-height: 170px;
+
+    border-radius: 23px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(16,9,31,.82),
+            rgba(8,5,17,.66)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    backdrop-filter:
+        blur(15px);
+
+    transition: .35s;
+
+}
+
+
+/* glowing corner */
+
+.card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+
+    height: 90px;
+
+    right: -30px;
+
+    top: -30px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(39,245,224,.18),
+            transparent 70%
+        );
+
+}
+
+.card:hover {
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+
+        rgba(39,245,224,.35);
+
+    box-shadow:
+
+        0 15px 45px
+        rgba(0,0,0,.3),
+
+        0 0 25px
+        rgba(39,245,224,.06);
+
+}
+
+
+.card-title {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    letter-spacing: 1.5px;
+
+    font-weight: 700;
+
+    margin-bottom: 17px;
+
+}
+
+
+.card-value {
+
+    font-size: 31px;
+
+    font-weight: 800;
+
+    color: var(--white);
+
+}
+
+
+.card-small {
+
+    color: var(--aqua);
+
+    font-size: 11px;
+
+    margin-top: 12px;
+
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.card-icon {
+
+    position: absolute;
+
+    right: 20px;
+
+    top: 20px;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 13px;
+
+    background:
+
+        rgba(155,92,255,.1);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1.7fr 1fr;
+
+    gap: 20px;
+
+    margin-top: 24px;
+
+}
+
+
+/* =========================================================
+   BOX
+========================================================= */
+
+.box {
+
+    position: relative;
+
+    padding: 27px;
+
+    min-height: 350px;
+
+    border-radius: 25px;
+
+    background:
+
+        rgba(10,6,22,.72);
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.18);
+
+    backdrop-filter:
+        blur(15px);
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================================
+   BOX GLOW
+========================================================= */
+
+.box::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    right: -100px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(155,92,255,.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   BOX HEAD
+========================================================= */
+
+.box h2 {
+
+    font-size: 19px;
+
+    margin-bottom: 7px;
+
+}
+
+.box-sub {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-bottom: 22px;
+
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart {
+
+    height: 220px;
+
+    display: flex;
+
+    align-items: end;
+
+    justify-content:
+        space-around;
+
+    gap: 15px;
+
+    padding:
+
+        15px 5px 30px;
+
+    position: relative;
+
+}
+
+
+/* chart baseline */
+
+.chart::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 29px;
+
+    height: 1px;
+
+    background:
+
+        rgba(155,92,255,.18);
+
+}
+
+
+/* =========================================================
+   BAR
+========================================================= */
+
+.bar {
+
+    width: 34px;
+
+    min-height: 15px;
+
+    position: relative;
+
+    border-radius:
+        9px 9px 3px 3px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            var(--aqua),
+            var(--violet)
+        );
+
+    box-shadow:
+
+        0 0 18px
+
+        rgba(39,245,224,.15);
+
+    transition: .4s;
+
+    z-index: 2;
+
+}
+
+.bar:hover {
+
+    transform:
+        scaleY(1.05);
+
+    filter:
+        brightness(1.3);
+
+    box-shadow:
+
+        0 0 30px
+
+        rgba(39,245,224,.35);
+
+}
+
+.bar span {
+
+    position: absolute;
+
+    bottom: -27px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   PATTERN
+========================================================= */
+
+.pattern {
+
+    position: relative;
+
+    padding: 17px;
+
+    border-radius: 16px;
+
+    margin-bottom: 12px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.09),
+            rgba(39,245,224,.025)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.13);
+
+    transition: .3s;
+
+}
+
+.pattern:hover {
+
+    transform:
+        translateX(5px);
+
+    border-color:
+
+        rgba(39,245,224,.3);
+
+}
+
+.pattern strong {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+
+}
+
+.pattern small {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   PATTERN INDICATOR
+========================================================= */
+
+.pattern-line {
+
+    height: 3px;
+
+    margin-top: 11px;
+
+    border-radius: 10px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            var(--pink),
+            var(--violet),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   RECOMMENDATION
+========================================================= */
+
+.recommendation {
+
+    margin-top: 24px;
+
+    padding: 27px;
+
+    border-radius: 25px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(155,92,255,.15),
+            rgba(255,79,145,.07)
+        );
+
+    border:
+
+        1px solid
+
+        rgba(155,92,255,.25);
+
+    box-shadow:
+
+        0 0 55px
+
+        rgba(155,92,255,.06);
+
+}
+
+.recommendation::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -70px;
+    top: -70px;
+
+    border-radius: 50%;
+
+    border:
+
+        1px solid
+
+        rgba(39,245,224,.18);
+
+    box-shadow:
+
+        0 0 30px
+
+        rgba(39,245,224,.06);
+
+}
+
+.recommendation h2 {
+
+    margin-bottom: 9px;
+
+    font-size: 20px;
+
+}
+
+.recommendation p {
+
+    color: #d3ccdf;
+
+    line-height: 1.7;
+
+    font-size: 13px;
+
+    max-width: 850px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+    .cards {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+@media(max-width:750px) {
+
+    .sidebar {
+
+        position: relative;
+
+        left: auto;
+        top: auto;
+        bottom: auto;
+
+        width: calc(100% - 30px);
+
+        height: auto;
+
+        margin: 15px;
+
+    }
+
+    .sidebar-status {
+
+        position: relative;
+
+        left: auto;
+        right: auto;
+        bottom: auto;
+
+        margin-top: 20px;
+
+    }
+
+    .main {
+
+        margin-left: 0;
+
+        padding:
+
+            25px 18px 50px;
+
+    }
+
+    .cards {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .top {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+
+    }
+
+    .chart {
+
+        gap: 7px;
+
+    }
+
+    .bar {
+
+        width: 25px;
+
+    }
+
+}
+
+
+@media(prefers-reduced-motion: reduce) {
+
+    * {
+
+        animation-duration:
+            .001ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-    <!-- SIDEBAR -->
 
-    <aside class="sidebar">
+<!-- =====================================================
+     3D BACKGROUND
+===================================================== -->
 
-        <div class="logo">
-            🍃 WASTELENS
-            <span>FOOD WASTE ANALYTICS</span>
-        </div>
+<canvas id="dashboard3d"></canvas>
 
-        <div class="menu">
+<div class="background-grid"></div>
 
-            <a href="index.html">⌂ Home</a>
-
-            <a href="dashboard.html" class="active">
-                ◉ Dashboard
-            </a>
-
-            <a href="add-waste.html">＋ Add Waste</a>
-
-            <a href="records.html">▣ Records</a>
-
-            <a href="analysis.html">◈ Analysis</a>
-
-        </div>
-
-    </aside>
+<div class="scan"></div>
 
 
-    <!-- MAIN CONTENT -->
 
-    <main class="main">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-        <div class="top">
+<aside class="sidebar">
 
-            <div>
-                <h1>Good Evening, Admin 👋</h1>
+    <div class="logo">
 
-                <p>
-                    Here's your food waste overview.
-                </p>
-            </div>
+        🌿 WASTELENS
 
-            <div class="profile">
-                👤 Admin
-            </div>
-
-        </div>
-
-
-        <!-- SUMMARY -->
-
-        <!-- SUMMARY -->
-
-<section class="cards">
-
-    <div class="card">
-
-        <div class="card-title">
-            TOTAL PREPARED
-        </div>
-
-        <div class="card-value" id="totalPrepared">
-            0 kg
-        </div>
-
-        <div class="card-small">
-            Current total
-        </div>
+        <span>
+            FOOD WASTE ANALYTICS
+        </span>
 
     </div>
 
 
-    <div class="card">
-
-        <div class="card-title">
-            TOTAL WASTED
-        </div>
-
-        <div class="card-value" id="totalWasted">
-            0 kg
-        </div>
-
-        <div class="card-small">
-            Current total
-        </div>
-
-    </div>
+    <div class="sidebar-line"></div>
 
 
-    <div class="card">
+    <div class="menu">
 
-        <div class="card-title">
-            WASTE RATE
-        </div>
+        <a href="index.html">
+            ⌂ &nbsp; Home
+        </a>
 
-        <div class="card-value" id="wasteRate">
-            0%
-        </div>
+        <a
+            href="dashboard.html"
+            class="active">
 
-        <div class="card-small">
-            Current average
-        </div>
+            ◉ &nbsp; Dashboard
 
-    </div>
+        </a>
 
+        <a href="add-waste.html">
 
-    <div class="card">
+            ＋ &nbsp; Add Waste
 
-        <div class="card-title">
-            EST. MONEY LOSS
-        </div>
+        </a>
 
-        <div class="card-value" id="moneyLoss">
-            ₹0
-        </div>
+        <a href="records.html">
 
-        <div class="card-small">
-            Current total
-        </div>
+            ▣ &nbsp; Records
+
+        </a>
+
+        <a href="analysis.html">
+
+            ◈ &nbsp; Analysis
+
+        </a>
 
     </div>
 
-</section>
 
-        <!-- ANALYSIS -->
+    <div class="sidebar-status">
 
-        <section class="grid">
+        <span class="status-dot"></span>
 
-            <div class="box">
+        <small>
+            Analytics system active
+        </small>
 
-                <h2>Waste Trend</h2>
+    </div>
 
-                <p class="box-sub">
-                    Weekly food waste pattern
-                </p>
+</aside>
 
-                <div class="chart">
 
-                    <div class="bar" style="height:55%;">
-                        <span>Mon</span>
-                    </div>
 
-                    <div class="bar" style="height:70%;">
-                        <span>Tue</span>
-                    </div>
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-                    <div class="bar" style="height:45%;">
-                        <span>Wed</span>
-                    </div>
+<main class="main">
 
-                    <div class="bar" style="height:80%;">
-                        <span>Thu</span>
-                    </div>
 
-                    <div class="bar" style="height:60%;">
-                        <span>Fri</span>
-                    </div>
+    <!-- TOP -->
 
-                    <div class="bar" style="height:90%;">
-                        <span>Sat</span>
-                    </div>
+    <div class="top">
 
-                    <div class="bar" style="height:50%;">
-                        <span>Sun</span>
-                    </div>
+        <div>
 
-                </div>
+            <div class="dashboard-badge">
+
+                ● LIVE WASTE ANALYTICS
 
             </div>
 
-
-            <div class="box">
-
-                <h2>Patterns Detected</h2>
-
-                <p class="box-sub">
-                    Insights from recorded data
-                </p>
-
-
-                <div class="pattern">
-
-                    <strong>🍚 Rice</strong>
-
-                    <small>
-                        Most wasted food
-                    </small>
-
-                </div>
-
-
-                <div class="pattern">
-
-                    <strong>☀️ Lunch</strong>
-
-                    <small>
-                        Highest waste meal
-                    </small>
-
-                </div>
-
-
-                <div class="pattern">
-
-                    <strong>📅 Monday</strong>
-
-                    <small>
-                        Highest waste day
-                    </small>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- RECOMMENDATION -->
-
-        <section class="recommendation">
-
-            <h2>💡 Smart Recommendation</h2>
+            <h1>
+                Good Evening, Admin 👋
+            </h1>
 
             <p>
-                Rice waste is consistently high during lunch.
-                Based on the recorded pattern, consider reducing
-                the prepared quantity and monitor the next few
-                records.
+                Here's your food waste overview.
             </p>
 
-        </section>
+        </div>
 
-    </main>
+
+        <div class="profile">
+
+            👤 Admin
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SUMMARY CARDS
+    ================================================= -->
+
+    <section class="cards">
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🍚
+            </div>
+
+            <div class="card-title">
+                TOTAL PREPARED
+            </div>
+
+            <div
+                class="card-value"
+                id="totalPrepared">
+
+                0 kg
+
+            </div>
+
+            <div class="card-small">
+                Current total
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🗑️
+            </div>
+
+            <div class="card-title">
+                TOTAL WASTED
+            </div>
+
+            <div
+                class="card-value"
+                id="totalWasted">
+
+                0 kg
+
+            </div>
+
+            <div class="card-small">
+                Current total
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                📊
+            </div>
+
+            <div class="card-title">
+                WASTE RATE
+            </div>
+
+            <div
+                class="card-value"
+                id="wasteRate">
+
+                0%
+
+            </div>
+
+            <div class="card-small">
+                Current average
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                ₹
+            </div>
+
+            <div class="card-title">
+                EST. MONEY LOSS
+            </div>
+
+            <div
+                class="card-value"
+                id="moneyLoss">
+
+                ₹0
+
+            </div>
+
+            <div class="card-small">
+                Current total
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         ANALYSIS
+    ================================================= -->
+
+    <section class="grid">
+
+
+        <!-- WASTE TREND -->
+
+        <div class="box">
+
+            <h2>
+                Waste Trend
+            </h2>
+
+            <p class="box-sub">
+                Weekly food waste pattern
+            </p>
+
+
+            <div class="chart">
+
+
+                <div
+                    class="bar"
+                    style="height:55%;">
+
+                    <span>
+                        Mon
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:70%;">
+
+                    <span>
+                        Tue
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:45%;">
+
+                    <span>
+                        Wed
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:80%;">
+
+                    <span>
+                        Thu
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:60%;">
+
+                    <span>
+                        Fri
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:90%;">
+
+                    <span>
+                        Sat
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:50%;">
+
+                    <span>
+                        Sun
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PATTERNS -->
+
+        <div class="box">
+
+            <h2>
+                Patterns Detected
+            </h2>
+
+            <p class="box-sub">
+                Insights from recorded data
+            </p>
+
+
+            <div class="pattern">
+
+                <strong>
+                    🍚 Rice
+                </strong>
+
+                <small>
+                    Most wasted food
+                </small>
+
+                <div
+                    class="pattern-line"
+                    style="width:85%;">
+
+                </div>
+
+            </div>
+
+
+            <div class="pattern">
+
+                <strong>
+                    ☀️ Lunch
+                </strong>
+
+                <small>
+                    Highest waste meal
+                </small>
+
+                <div
+                    class="pattern-line"
+                    style="width:70%;">
+
+                </div>
+
+            </div>
+
+
+            <div class="pattern">
+
+                <strong>
+                    📅 Monday
+                </strong>
+
+                <small>
+                    Highest waste day
+                </small>
+
+                <div
+                    class="pattern-line"
+                    style="width:60%;">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         RECOMMENDATION
+    ================================================= -->
+
+    <section class="recommendation">
+
+        <h2>
+            💡 Smart Recommendation
+        </h2>
+
+        <p>
+
+            Rice waste is consistently high during lunch.
+            Based on the recorded pattern, consider reducing
+            the prepared quantity and monitor the next few
+            records.
+
+        </p>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     THREE.JS
+===================================================== -->
+
+<script type="module">
+
+import * as THREE from
+"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById(
+        "dashboard3d"
+    );
+
+
+/* =====================================================
+   SCENE
+===================================================== */
+
+const scene =
+    new THREE.Scene();
+
+scene.fog =
+    new THREE.FogExp2(
+        0x05030b,
+        0.025
+    );
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+const camera =
+    new THREE.PerspectiveCamera(
+
+        55,
+
+        window.innerWidth /
+        window.innerHeight,
+
+        0.1,
+
+        100
+
+    );
+
+camera.position.z = 13;
+
+
+/* =====================================================
+   RENDERER
+===================================================== */
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        canvas: canvas,
+
+        antialias: true,
+
+        alpha: true
+
+    });
+
+renderer.setPixelRatio(
+
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+
+);
+
+renderer.setSize(
+
+    window.innerWidth,
+
+    window.innerHeight
+
+);
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+const world =
+    new THREE.Group();
+
+scene.add(world);
+
+
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+const particleCount =
+    window.innerWidth < 700
+        ? 500
+        : 900;
+
+
+const positions =
+    new Float32Array(
+        particleCount * 3
+    );
+
+
+for (
+    let i = 0;
+    i < particleCount;
+    i++
+) {
+
+    const radius =
+        7 +
+        Math.random() * 17;
+
+    const theta =
+        Math.random() *
+        Math.PI * 2;
+
+    const phi =
+        Math.acos(
+            2 * Math.random() - 1
+        );
+
+
+    positions[i * 3] =
+
+        radius *
+        Math.sin(phi) *
+        Math.cos(theta);
+
+
+    positions[i * 3 + 1] =
+
+        radius *
+        Math.sin(phi) *
+        Math.sin(theta);
+
+
+    positions[i * 3 + 2] =
+
+        radius *
+        Math.cos(phi);
+
+}
+
+
+const particleGeometry =
+    new THREE.BufferGeometry();
+
+
+particleGeometry.setAttribute(
+
+    "position",
+
+    new THREE.BufferAttribute(
+        positions,
+        3
+    )
+
+);
+
+
+const particleMaterial =
+    new THREE.PointsMaterial({
+
+        color: 0x9b5cff,
+
+        size: .045,
+
+        transparent: true,
+
+        opacity: .65,
+
+        blending:
+            THREE.AdditiveBlending,
+
+        depthWrite: false
+
+    });
+
+
+const particles =
+    new THREE.Points(
+
+        particleGeometry,
+
+        particleMaterial
+
+    );
+
+
+world.add(particles);
+
+
+
+/* =====================================================
+   CENTRAL DATA SPHERE
+===================================================== */
+
+const sphereGeometry =
+    new THREE.IcosahedronGeometry(
+        2.7,
+        2
+    );
+
+
+const sphereMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color: 0x9b5cff,
+
+        wireframe: true,
+
+        transparent: true,
+
+        opacity: .20
+
+    });
+
+
+const sphere =
+    new THREE.Mesh(
+
+        sphereGeometry,
+
+        sphereMaterial
+
+    );
+
+
+world.add(sphere);
+
+
+
+/* =====================================================
+   INNER SPHERE
+===================================================== */
+
+const innerGeometry =
+    new THREE.IcosahedronGeometry(
+        1.6,
+        1
+    );
+
+
+const innerMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color: 0x27f5e0,
+
+        wireframe: true,
+
+        transparent: true,
+
+        opacity: .18
+
+    });
+
+
+const inner =
+    new THREE.Mesh(
+
+        innerGeometry,
+
+        innerMaterial
+
+    );
+
+
+world.add(inner);
+
+
+
+/* =====================================================
+   ORBIT RINGS
+===================================================== */
+
+const ringData = [
+
+    {
+        radius: 3.4,
+        color: 0x27f5e0,
+        rotationX: 1.1,
+        rotationZ: .2
+    },
+
+    {
+        radius: 4.2,
+        color: 0xff4f91,
+        rotationX: .7,
+        rotationZ: -.5
+    },
+
+    {
+        radius: 5,
+        color: 0xffc857,
+        rotationX: 1.4,
+        rotationZ: .8
+    },
+
+    {
+        radius: 5.8,
+        color: 0x9b5cff,
+        rotationX: .3,
+        rotationZ: 1.2
+    }
+
+];
+
+
+const rings = [];
+
+
+ringData.forEach(
+
+    item => {
+
+        const geometry =
+            new THREE.TorusGeometry(
+
+                item.radius,
+
+                .012,
+
+                8,
+
+                180
+
+            );
+
+
+        const material =
+            new THREE.MeshBasicMaterial({
+
+                color: item.color,
+
+                transparent: true,
+
+                opacity: .32,
+
+                blending:
+                    THREE.AdditiveBlending
+
+            });
+
+
+        const ring =
+            new THREE.Mesh(
+
+                geometry,
+
+                material
+
+            );
+
+
+        ring.rotation.x =
+            item.rotationX;
+
+        ring.rotation.z =
+            item.rotationZ;
+
+
+        world.add(ring);
+
+        rings.push(ring);
+
+    }
+
+);
+
+
+
+/* =====================================================
+   FLOATING DATA CUBES
+===================================================== */
+
+const cubeGroup =
+    new THREE.Group();
+
+world.add(cubeGroup);
+
+
+const cubeColors = [
+
+    0x27f5e0,
+
+    0x9b5cff,
+
+    0xff4f91,
+
+    0xffc857
+
+];
+
+
+for (
+    let i = 0;
+    i < 45;
+    i++
+) {
+
+    const size =
+        .035 +
+        Math.random() * .10;
+
+
+    const geometry =
+        new THREE.BoxGeometry(
+            size,
+            size,
+            size
+        );
+
+
+    const material =
+        new THREE.MeshBasicMaterial({
+
+            color:
+                cubeColors[
+                    i %
+                    cubeColors.length
+                ],
+
+            transparent: true,
+
+            opacity: .65
+
+        });
+
+
+    const cube =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    const radius =
+        3.5 +
+        Math.random() * 9;
+
+
+    const angle =
+        Math.random() *
+        Math.PI * 2;
+
+
+    cube.position.x =
+        Math.cos(angle) *
+        radius;
+
+
+    cube.position.y =
+        (Math.random() - .5) *
+        8;
+
+
+    cube.position.z =
+        Math.sin(angle) *
+        radius;
+
+
+    cube.userData.speed =
+        .001 +
+        Math.random() * .004;
+
+
+    cube.userData.offset =
+        Math.random() *
+        Math.PI * 2;
+
+
+    cubeGroup.add(cube);
+
+}
+
+
+
+/* =====================================================
+   DATA LINES
+===================================================== */
+
+const lineMaterial =
+    new THREE.LineBasicMaterial({
+
+        color: 0x27f5e0,
+
+        transparent: true,
+
+        opacity: .13
+
+    });
+
+
+for (
+    let i = 0;
+    i < 18;
+    i++
+) {
+
+    const points = [];
+
+    const radius = 3.2;
+
+    const angle =
+        Math.random() *
+        Math.PI * 2;
+
+
+    points.push(
+
+        new THREE.Vector3(
+
+            Math.cos(angle) *
+            radius,
+
+            (Math.random()-.5) *
+            2,
+
+            Math.sin(angle) *
+            radius
+
+        )
+
+    );
+
+
+    points.push(
+
+        new THREE.Vector3(
+
+            (Math.random()-.5) *
+            10,
+
+            (Math.random()-.5) *
+            7,
+
+            (Math.random()-.5) *
+            10
+
+        )
+
+    );
+
+
+    const geometry =
+        new THREE.BufferGeometry()
+            .setFromPoints(points);
+
+
+    const line =
+        new THREE.Line(
+            geometry,
+            lineMaterial
+        );
+
+
+    world.add(line);
+
+}
+
+
+
+/* =====================================================
+   MOUSE
+===================================================== */
+
+const pointer = {
+
+    x: 0,
+
+    y: 0
+
+};
+
+
+window.addEventListener(
+
+    "pointermove",
+
+    event => {
+
+        pointer.x =
+
+            (
+                event.clientX /
+                window.innerWidth
+                - .5
+            ) * 2;
+
+
+        pointer.y =
+
+            (
+                event.clientY /
+                window.innerHeight
+                - .5
+            ) * 2;
+
+    }
+
+);
+
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+let time = 0;
+
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    time += .003;
+
+
+    /* PARTICLES */
+
+    particles.rotation.y += .00025;
+
+    particles.rotation.x += .00005;
+
+
+
+    /* SPHERES */
+
+    sphere.rotation.x += .0015;
+
+    sphere.rotation.y += .0025;
+
+
+    inner.rotation.x -= .002;
+
+    inner.rotation.y -= .001;
+
+
+
+    /* RINGS */
+
+    rings.forEach(
+
+        (ring, index) => {
+
+            ring.rotation.y +=
+
+                .0006 *
+                (index + 1);
+
+
+            ring.rotation.z +=
+
+                .0009 *
+                (index + 1);
+
+        }
+
+    );
+
+
+
+    /* CUBES */
+
+    cubeGroup.children.forEach(
+
+        (cube, index) => {
+
+            cube.rotation.x +=
+                cube.userData.speed;
+
+            cube.rotation.y +=
+                cube.userData.speed * 1.4;
+
+
+            cube.position.y +=
+
+                Math.sin(
+                    time * 2 +
+                    cube.userData.offset
+                ) * .0007;
+
+        }
+
+    );
+
+
+
+    /* MOUSE MOVEMENT */
+
+    world.rotation.y +=
+
+        (
+            pointer.x * .04 -
+            world.rotation.y
+        ) * .018;
+
+
+    world.rotation.x +=
+
+        (
+            -pointer.y * .025 -
+            world.rotation.x
+        ) * .018;
+
+
+
+    /* RENDER */
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        camera.aspect =
+
+            window.innerWidth /
+            window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+
+            window.innerWidth,
+
+            window.innerHeight
+
+        );
+
+    }
+
+);
+
+</script>
+
+
+
+<!-- =====================================================
+     DASHBOARD API
+===================================================== -->
+
 <script>
 
 async function loadDashboard() {
 
     try {
 
-        const response = await fetch(
-            "https://food-waste-pattern-analyzer.onrender.com/api/dashboard"
+        const response =
+            await fetch(
+                "https://food-waste-pattern-analyzer.onrender.com/api/dashboard"
+    );
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "totalPrepared"
+        ).textContent =
+
+            data.total_prepared +
+            " kg";
+
+
+        document.getElementById(
+            "totalWasted"
+        ).textContent =
+
+            data.total_wasted +
+            " kg";
+
+
+        document.getElementById(
+            "wasteRate"
+        ).textContent =
+
+            data.waste_rate +
+            "%";
+
+
+        document.getElementById(
+            "moneyLoss"
+        ).textContent =
+
+            "₹" +
+            data.money_loss;
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Dashboard loading failed:",
+            error
         );
-
-        const data = await response.json();
-
-        document.getElementById("totalPrepared").textContent =
-            data.total_prepared + " kg";
-
-        document.getElementById("totalWasted").textContent =
-            data.total_wasted + " kg";
-
-        document.getElementById("wasteRate").textContent =
-            data.waste_rate + "%";
-
-        document.getElementById("moneyLoss").textContent =
-            "₹" + data.money_loss;
-
-    } catch (error) {
-
-        console.error("Dashboard loading failed:", error);
 
     }
 
 }
 
+
 loadDashboard();
 
 </script>
+
+
 </body>
+
 </html>
